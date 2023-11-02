@@ -118,12 +118,12 @@ class Welcome extends CI_Controller
 			$this->form_validation->set_rules('password', 'Password', 'required');
 
 			if ($this->form_validation->run() == TRUE) {
-				$username = $this->input->post('username');  // Change from email to username
+				$username = $this->input->post('username');  
 				$password = $this->input->post('password');
 				$password = sha1($password);
 
 				$this->load->model('user_model');
-				$status = $this->user_model->checkPassword($password, $username);  // Change from email to username
+				$status = $this->user_model->checkPassword($password, $username); 
 				if ($status != false) {
 					$username = $status->username;
 					$email = $status->email;
@@ -251,6 +251,25 @@ class Welcome extends CI_Controller
 		}
 	}
 
+	function delete($nip = null) {
+		if (!$nip) {
+			$this->session->set_flashdata('error', 'Permintaan tidak valid.');
+			redirect(base_url('welcome/dashboard'));
+			return;
+		}
+	
+		$this->load->model('user_model');
+		$result = $this->user_model->deleteUserByNIP($nip);
+	
+		if ($result) {
+			$this->session->set_flashdata('success', 'Data berhasil dihapus.');
+		} else {
+			$this->session->set_flashdata('error', 'Data gagal dihapus.');
+		}
+	
+		redirect(base_url('welcome/list'));
+	}
+	
 
 	function logout()
 	{

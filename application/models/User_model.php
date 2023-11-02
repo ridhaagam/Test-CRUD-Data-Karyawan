@@ -47,12 +47,6 @@ class User_model extends CI_Model
 		$this->db->update('users', $data);
 	}
 
-	public function deleteUser($NIP)
-	{
-		$this->db->where('NIP', $NIP);
-		$this->db->delete('users');
-	}
-
 	public function addUser($data)
 	{
 		$this->db->insert('users', $data);
@@ -73,6 +67,16 @@ class User_model extends CI_Model
 	{
 		return $this->db->insert('jobhistory', $data);
 	}
+
+	public function deleteUserByNIP($nip) {
+		$this->db->where('NIP', $nip);
+		$this->db->delete('jobhistory');
+	
+		$this->db->where('nip', $nip);
+		return $this->db->delete('users'); 
+	}
+	
+	
 	public function getEmployeeJobHistory($NIP)
 	{
 		$this->db->where('NIP', $NIP);
